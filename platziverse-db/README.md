@@ -3,7 +3,7 @@
 # Usage
 
 ```js
-  const setupDatabase = require('platziverse-db)
+  const setupDatabase = require('platziverse-db')
 
 
   setupDatabase(config).then((db) => {
