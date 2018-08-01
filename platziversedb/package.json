@@ -1,0 +1,23 @@
+{
+  "name": "platziversedb",
+  "version": "1.0.0",
+  "description": "A Simple IoT Platform - DB Module",
+  "main": "index.js",
+  "scripts": {
+    "lint": "standard",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RSginer/platziverse-nodejs.git"
+  },
+  "author": "RSginer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RSginer/platziverse-nodejs/issues"
+  },
+  "homepage": "https://github.com/RSginer/platziverse-nodejs#readme",
+  "devDependencies": {
+    "standard": "^11.0.1"
+  }
+}
