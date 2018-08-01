@@ -35,8 +35,8 @@ async function setup () {
 }
 
 function handleFatalError (err) {
-  console.error(`${chalk.red('[FATAL ERROR]')} ${err.message}`)
-  console.error(err.stack)
+  console.error(`${chalk.red('[FATAL ERROR MESSAGE]')} ${err.message}`)
+  console.error(`${chalk.red('[FATAL ERROR STACK]')} ${err.stack}`)
   process.exit(1)
 }
 
