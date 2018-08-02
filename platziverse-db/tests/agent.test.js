@@ -76,7 +76,7 @@ test.beforeEach(async () => {
   AgentStub.update = sandbox.stub()
   AgentStub.update.withArgs(single, uuidArgs).returns(Promise.resolve(single))
 
-  //Model create Stub
+  // Model create Stub
   AgentStub.create = sandbox.stub()
   AgentStub.create.withArgs(newAgent).returns(Promise.resolve({
     toJSON: () => newAgent
@@ -88,7 +88,6 @@ test.beforeEach(async () => {
   })
 
   db = await setupDatabase(config)
-
 })
 
 test.afterEach(() => {
