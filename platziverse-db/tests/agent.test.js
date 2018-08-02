@@ -117,6 +117,7 @@ test.serial('Agent#findById', async t => {
 
 test.serial('Agent#createOrUpdate - update', async t => {
   let agent = await db.Agent.createOrUpdate(single)
+
   t.true(AgentStub.findOne.called, 'findOne should be called')
   t.true(AgentStub.findOne.calledTwice, 'findOne should be called twice')
   t.true(AgentStub.update.calledOnce, 'update should be called once')
