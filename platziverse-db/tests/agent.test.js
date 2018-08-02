@@ -13,15 +13,26 @@ let config = {
 let MetricStub = {
   belongsTo: sinon.spy()
 }
+let AgentStub = null
 
 let single = Object.assign({}, agentFixtures.single)
 let id = 1
 let uuid = 'yyy-yyy-yyy'
-let AgentStub = null
-
+let username = 'platzi'
 let db = null
 let sandbox = null
 
+let usernameArgs = {
+  where: {
+    username,
+    connected: true
+  }
+}
+let connectedArgs = {
+  where: {
+    connected: true
+  }
+}
 let uuidArgs = {
   where: {
     uuid
@@ -34,6 +45,12 @@ test.beforeEach(async () => {
   AgentStub = {
     hasMany: sandbox.spy()
   }
+
+  // Model findAll
+  AgentStub.findAll = sandbox.stub()
+  AgentStub.findAll.returns(Promise.resolve(agentFixtures.all))
+  AgentStub.findAll.withArgs(connectedArgs).returns(Promise.resolve(agentFixtures.connected))
+  AgentStub.findAll.withArgs(usernameArgs).returns(Promise.resolve(agentFixtures.platzi))
 
   // Model findOne Stub
   AgentStub.findOne = sandbox.stub()
@@ -53,6 +70,7 @@ test.beforeEach(async () => {
   })
 
   db = await setupDatabase(config)
+
 })
 
 test.afterEach(() => {
@@ -96,4 +114,34 @@ test.serial('Agent#findByUuid', async t => {
   t.true(AgentStub.findOne.calledWith(uuidArgs), 'findOne should be called with specified args')
 
   t.deepEqual(agent, agentFixtures.findByUuid(uuid), 'should be the same')
+})
+
+test.serial('Agent#findAll', async t => {
+  let agents = await db.Agent.findAll()
+
+  t.true(AgentStub.findAll.called, 'findAll should be called')
+  t.true(AgentStub.findAll.calledOnce, 'findAll should be called')
+  t.true(Array.isArray(agents), 'agents should be an Array')
+
+  t.deepEqual(agents, agentFixtures.all, 'should be the same')
+})
+
+test.serial('Agent#findConnected', async t => {
+  let agents = await db.Agent.findConnected()
+
+  t.true(AgentStub.findAll.called, 'findAll should be called')
+  t.true(AgentStub.findAll.calledOnce, 'findAll should be called once')
+  t.true(AgentStub.findAll.calledWith(connectedArgs), 'findAll should be called with specified args')
+
+  t.deepEqual(agents, agentFixtures.connected, 'should be the same')
+})
+
+test.serial('Agent#findByUsername', async t => {
+  let agents = await db.Agent.findByUsername(username)
+
+  t.true(AgentStub.findAll.called, 'findAll should be called')
+  t.true(AgentStub.findAll.calledOnce, 'findAll should be called')
+  t.true(AgentStub.findAll.calledWith(usernameArgs), 'findAll should be called with specified args')
+
+  t.deepEqual(agents, agentFixtures.platzi, 'should be the same')
 })
