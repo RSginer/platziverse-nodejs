@@ -25,8 +25,17 @@ module.exports = function setupAgent(AgentModel) {
     return AgentModel.findById(id)
   }
 
+  function findByUuid(uuid) {
+    return AgentModel.findOne({
+      where: {
+        uuid
+      }
+    })
+  }
+
   return {
     findById,
+    findByUuid,
     createOrUpdate
   }
 
