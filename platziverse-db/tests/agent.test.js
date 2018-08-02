@@ -126,9 +126,11 @@ test.serial('Agent#createOrUpdate - update', async t => {
 
 test.serial('Agent#createOrUpdate - create', async t => {
   let agent = await db.Agent.createOrUpdate(newAgent)
+
   t.true(AgentStub.findOne.called, 'findOne should be called')
   t.true(AgentStub.findOne.calledOnce, 'findOne should be called twice')
-  t.true(AgentStub.create.calledOnce, 'update should be called once')
+  t.true(AgentStub.create.calledOnce, 'create should be called once')
+  t.true(AgentStub.create.calledWith(newAgent), 'create should be called with specified args')
 
   t.deepEqual(agent, newAgent, 'should be the same')
 })
@@ -147,7 +149,6 @@ test.serial('Agent#findAll', async t => {
 
   t.true(AgentStub.findAll.called, 'findAll should be called')
   t.true(AgentStub.findAll.calledOnce, 'findAll should be called')
-  t.true(Array.isArray(agents), 'agents should be an Array')
 
   t.deepEqual(agents, agentFixtures.all, 'should be the same')
 })
