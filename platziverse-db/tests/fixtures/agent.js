@@ -14,9 +14,9 @@ const agent = {
 
 const agents = [
   agent,
-  extend(agent, { id: 2, uuid: 'yyy-yyy-yyt', connected: false, username: 'test'}),
-  extend(agent, { id: 3, uuid: 'yyy-yyy-yyx', connected: true, username: 'test'}),
-  extend(agent, { id: 4, uuid: 'yyy-yyy-yyz', connected: false, username: 'test'})
+  extend(agent, { id: 2, uuid: 'yyy-yyy-yyt', connected: false, username: 'test' }),
+  extend(agent, { id: 3, uuid: 'yyy-yyy-yyx', connected: true, username: 'test' }),
+  extend(agent, { id: 4, uuid: 'yyy-yyy-yyz', connected: false, username: 'test' })
 ]
 
 function extend (obj, values) {

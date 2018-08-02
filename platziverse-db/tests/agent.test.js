@@ -42,7 +42,7 @@ test.beforeEach(async () => {
   // Model findById Stub
   AgentStub.findById = sandbox.stub()
   AgentStub.findById.withArgs(id).returns(Promise.resolve(agentFixtures.findById(id)))
-  
+
   // Model update Stub
   AgentStub.update = sandbox.stub()
   AgentStub.update.withArgs(single, uuidArgs).returns(Promise.resolve(single))
@@ -51,7 +51,7 @@ test.beforeEach(async () => {
     './models/agent': () => AgentStub,
     './models/metric': () => MetricStub
   })
- 
+
   db = await setupDatabase(config)
 })
 

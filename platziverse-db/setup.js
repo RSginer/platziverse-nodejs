@@ -15,7 +15,7 @@ async function setup () {
   })
 
   if (!answer.setup) {
-    return console.log('Nothing happened! :)');
+    return console.log('Nothing happened! :)')
   }
 
   const config = {
