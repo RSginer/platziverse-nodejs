@@ -1,9 +1,38 @@
 'use strict'
 
 module.exports = function setupMetric(MetricModel, AgentModel) {
+  async function findByAgentUuid(uuid) {
+    return MetricModel.findAll({
+      attributes: ['type'],
+      group: ['type'],
+      include: [{
+        attributes: [],
+        model: AgentModel,
+        where: {
+          uuid
+        }
+      }],
+      raw: true
+    })
+  }
 
-  async function findByAgentUuid (uuid) {
-    
+  async function findByTypeAgentUuid(type, uuid) {
+    return MetricModel.findAll({
+      attributes: ['id', 'type', 'value', 'createdAt'],
+      where: {
+        type
+      },
+      limit: 20,
+      order: [['createdAt', 'DESC']],
+      include: [{
+        attributes: [],
+        model: AgentModel,
+        where: {
+          uuid
+        }
+      }],
+      raw: true
+    })
   }
 
   async function create(uuid, metric) {
@@ -18,10 +47,11 @@ module.exports = function setupMetric(MetricModel, AgentModel) {
       const result = await MetricModel.create(metric)
       return result.toJSON()
     }
-
   }
 
   return {
-    create
+    create,
+    findByAgentUuid,
+    findByTypeAgentUuid
   }
 }
