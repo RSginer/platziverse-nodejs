@@ -1,6 +1,6 @@
 {
   "name": "platziverse-config",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Modulo de configuracion para platziverse IoT",
   "main": "index.js",
   "scripts": {
