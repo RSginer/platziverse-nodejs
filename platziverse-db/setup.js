@@ -4,7 +4,7 @@ const debug = require('debug')('platziverse:db:setup')
 const inquirer = require('inquirer')
 const chalk = require('chalk')
 const db = require('./index')
-const config = require('platziverse-config').db
+const config = require('platziverse-config')
 const prompt = inquirer.createPromptModule()
 
 async function setup() {
@@ -21,10 +21,9 @@ async function setup() {
     return console.log('Nothing happened! :)')
   }
 
-  config.logging = s => debug(s)
-  config.setup = true
+  config.db.setup = true
 
-  await db(config).catch(handleFatalError)
+  await db(config.db).catch(handleFatalError)
 
   console.log('Success!')
   process.exit(0)

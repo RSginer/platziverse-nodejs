@@ -5,11 +5,8 @@ const mosca = require('mosca')
 const redis = require('redis')
 const chalk = require('chalk')
 const db = require('platziverse-db')
-const config = require('platziverse-config').db
+const config = require('platziverse-config')
 const { parsePayload } = require('platziverse-utils')
-
-config.logging = s => debug(s)
-
 
 const backend = {
   type: 'redis',
@@ -117,7 +114,7 @@ server.on('published', async (packet, client) => {
 })
 
 server.on('ready', async () => {
-  const services = await db(config).catch(handleFatalError)
+  const services = await db(config.db).catch(handleFatalError)
 
   Agent = services.Agent
   Metric = services.Metric

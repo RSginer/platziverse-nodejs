@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/RSginer/platziverse-nodejs/issues"
   },
-  "homepage": "https://github.com/RSginer/platziverse-nodejs#readme"
+  "homepage": "https://github.com/RSginer/platziverse-nodejs#readme",
+  "dependencies": {
+    "debug": "^3.1.0"
+  }
 }

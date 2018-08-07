@@ -1,11 +1,11 @@
 'use strict'
 
 const db = require('../')
-const config = require('platziverse-config').db
+const config = require('platziverse-config')
 async function run () {
 
 
-  const { Agent, Metric } = await db(config).catch(handleFatalError)
+  const { Agent, Metric } = await db(config.db).catch(handleFatalError)
 
   const agent = await Agent.createOrUpdate({
     uuid: 'rrr-rrr-rrr',
