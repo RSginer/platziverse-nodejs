@@ -6,7 +6,7 @@ const redis = require('redis')
 const chalk = require('chalk')
 const db = require('platziverse-db')
 const config = require('platziverse-config').db
-const { parsePayload } = require('./utils')
+const { parsePayload } = require('platziverse-utils')
 
 config.logging = s => debug(s)
 

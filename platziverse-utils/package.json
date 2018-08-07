@@ -1,0 +1,19 @@
+{
+  "name": "platziverse-utils",
+  "version": "1.0.0",
+  "description": "Utils for Simple IoT platform",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RSginer/platziverse-nodejs.git"
+  },
+  "author": "RSginer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RSginer/platziverse-nodejs/issues"
+  },
+  "homepage": "https://github.com/RSginer/platziverse-nodejs#readme"
+}
