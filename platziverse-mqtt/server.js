@@ -40,8 +40,32 @@ server.on('clientConnected', client => {
 })
 
 // Cuando el cliente MQTT se desconecta
-server.on('clientDisconnected', client => {
+server.on('clientDisconnected', async client => {
   debug(`Client Disconnected: ${client.id}`)
+  const agent = clients.get(client.id)
+
+  if (agent) {
+    // Marcar agente como desconectado
+    agent.connected = false
+    try {
+      await Agent.createOrUpdate(agent)
+    } catch (e) {
+      return handleError(e)
+    }
+
+    // Borrar Agent de clientes
+    clients.delete(client.id)
+    server.publish({
+      topic: 'agent/disconnected',
+      payload: JSON.stringify({
+        agent: {
+          uuid: agent.uuid
+        }
+      })
+    })
+
+    debug(`Client (${client.id}) associated to Agent ${agent.uuid} marked as disconnected`)
+  }
 })
 
 server.on('published', async (packet, client) => {
@@ -85,6 +109,19 @@ server.on('published', async (packet, client) => {
               }
             })
           })
+        }
+
+        // Store Metrics
+        for(let metric of payload.metrics) {
+          let m
+
+          try {
+            m = await Metric.create(agent.uuid, metric)
+          } catch (e) {
+            return handleError(e)
+          }
+
+          debug(`Metric ${m.id} saved on agent ${agent.uuid}`)
         }
       }
       break
