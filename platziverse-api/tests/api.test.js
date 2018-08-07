@@ -5,6 +5,8 @@ const request = require('supertest')
 const sinon = require('sinon')
 const proxyquire = require('proxyquire')
 
+const { AgentFixtures } = require('platziverse-mock')
+
 let config = {
   db: {
     logging: s => {}

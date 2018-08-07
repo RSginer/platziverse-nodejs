@@ -34,6 +34,7 @@
     "express": "^4.16.3",
     "express-asyncify": "^1.0.0",
     "platziverse-config": "file:../platziverse-config",
-    "platziverse-db": "file:../platziverse-db"
+    "platziverse-db": "file:../platziverse-db",
+    "platziverse-mock": "file:../platziverse-mock"
   }
 }
