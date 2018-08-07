@@ -7,7 +7,7 @@ const asyncify = require('express-asyncify')
 const db = require('platziverse-db')
 const config = require('platziverse-config')
 
-const { AgentNotFoundError } = require('./errors')
+const { AgentNotFoundError, MetricsNotFoundError } = require('./errors')
 
 const api = asyncify(express.Router())
 
@@ -30,30 +30,78 @@ api.use('*', async (req, res, next) => {
   next()
 })
 
-api.get('/agents', (req, res) => {
+api.get('/agents', async (req, res, next) => {
   debug(`A request has come to /agents`)
-  res.send({})
-})
 
-api.get('/agent/:uuid', (req, res, next) => {
-  const { uuid } = req.params
+  let agents = []
 
-  if (uuid !== 'yyy') {
-    return next(new AgentNotFoundError(uuid, 'Agent not found'))
+  try {
+    agents = await Agent.findConnected()
+  } catch (e) {
+    next(e)
   }
 
-  res.send({ uuid })
+  res.send(agents)
 })
 
-api.get('/metrics/:uuid', (req, res) => {
+api.get('/agent/:uuid', async (req, res, next) => {
   const { uuid } = req.params
 
-  res.send({ uuid })
+  debug(`A request has come to /agent/${uuid}`)
+
+  let agent
+
+  try {
+    agent = await Agent.findByUuid(uuid)
+  } catch (e) {
+    next(e)
+  }
+
+  if (!agent) {
+    return next(new AgentNotFoundError(uuid))
+  }
+
+  res.send(agent)
 })
 
-api.get('/metrics/:uuid/:type', (req, res) => {
+api.get('/metrics/:uuid', async (req, res, next) => {
+  const { uuid } = req.params
+
+  debug(`request to /metrics/${uuid}`)
+
+  let metrics = []
+
+  try {
+    metrics = await Metric.findByAgentUuid(uuid)
+  } catch (err) {
+    return next(err)
+  }
+
+  if (!metrics || metrics.length === 0) {
+    return next(new MetricsNotFoundError(uuid))
+  }
+
+  res.send(metrics)
+})
+
+api.get('/metrics/:uuid/:type', async (req, res, next) => {
   const { uuid, type } = req.params
-  res.send({ uuid, type })
+
+  debug(`request to /metrics/${uuid}/${type}`)
+
+  let metrics = []
+
+  try {
+    metrics = await Metric.findByTypeAgentUuid(type, uuid)
+  } catch (err) {
+    return next(err)
+  }
+
+  if (!metrics || metrics.length === 0) {
+    return next(new MetricsNotFoundError(uuid, type))
+  }
+
+  res.send(metrics)
 })
 
 module.exports = api

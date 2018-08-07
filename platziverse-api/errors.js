@@ -26,7 +26,7 @@ class MetricsNotFoundError extends Error {
       Error.captureStackTrace(this, AgentNotFoundError)
     }
 
-    this.message = (type) ? `Metrics of Agent with UUID ${givenUuid} and type${type} not found in DataBase` : `Agent with UUID ${givenUuid} not found in DataBase`
+    this.message = (type) ? `Metrics of Agent with UUID ${givenUuid} and type ${type} not found in DataBase` : `Agent with UUID ${givenUuid} not found in DataBase`
   }
 }
 class NotAuthorizedError extends Error {
