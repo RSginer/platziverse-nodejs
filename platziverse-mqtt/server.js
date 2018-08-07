@@ -5,6 +5,7 @@ const mosca = require('mosca')
 const redis = require('redis')
 const chalk = require('chalk')
 const db = require('platziverse-db')
+const config = require('platziverse-config').db
 
 const { parsePayload } = require('./utils')
 
@@ -17,15 +18,6 @@ const backend = {
 const settings = {
   port: 1883,
   backend
-}
-
-const config = {
-  database: process.env.DB_NAME || 'platziverse',
-  username: process.env.DB_USER || 'platzi',
-  password: process.env.DB_PASS || 'platzi',
-  host: process.env.DB_HOST || 'localhost',
-  dialect: 'postgres',
-  logging: s => debug(s)
 }
 
 const server = new mosca.Server(settings)
@@ -112,16 +104,10 @@ server.on('published', async (packet, client) => {
         }
 
         // Store Metrics
-        for(let metric of payload.metrics) {
-          let m
-
-          try {
-            m = await Metric.create(agent.uuid, metric)
-          } catch (e) {
-            return handleError(e)
-          }
-
-          debug(`Metric ${m.id} saved on agent ${agent.uuid}`)
+        try {
+          await Promise.all(payload.metrics.map(metric => Metric.create(agent.uuid, metric).catch(handleError)))
+        } catch (err) {
+          return handleError(err)
         }
       }
       break
@@ -139,13 +125,13 @@ server.on('ready', async () => {
 
 server.on('error', handleFatalError)
 
-function handleFatalError (error) {
+function handleFatalError(error) {
   console.error(`${chalk.red('[FATAL ERROR]')} ${error.message}`)
   console.error(error.stack)
   process.exit(1)
 }
 
-function handleError (err) {
+function handleError(err) {
   console.error(`${chalk.red('[ERROR]')} ${err.message}`)
   console.error(err.stack)
 }

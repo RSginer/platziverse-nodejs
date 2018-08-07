@@ -1,0 +1,22 @@
+{
+  "name": "platziverse-config",
+  "version": "1.0.0",
+  "description": "Modulo de configuracion para platziverse IoT",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RSginer/platziverse-nodejs.git"
+  },
+  "keywords": [
+    "ç"
+  ],
+  "author": "RSginer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RSginer/platziverse-nodejs/issues"
+  },
+  "homepage": "https://github.com/RSginer/platziverse-nodejs#readme"
+}

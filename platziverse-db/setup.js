@@ -4,7 +4,7 @@ const debug = require('debug')('platziverse:db:setup')
 const inquirer = require('inquirer')
 const chalk = require('chalk')
 const db = require('./index')
-
+const config = require('platziverse-config').db
 const prompt = inquirer.createPromptModule()
 
 async function setup() {
@@ -21,15 +21,8 @@ async function setup() {
     return console.log('Nothing happened! :)')
   }
 
-  const config = {
-    database: process.env.DB_NAME || 'platziverse',
-    username: process.env.DB_USER || 'platzi',
-    password: process.env.DB_PASS || 'platzi',
-    host: process.env.DB_HOST || 'localhost',
-    dialect: 'postgres',
-    logging: s => debug(s),
-    setup: true
-  }
+  config.logging = s => debug(s)
+  config.setup = true
 
   await db(config).catch(handleFatalError)
 

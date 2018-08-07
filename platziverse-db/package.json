@@ -34,6 +34,7 @@
     "inquirer": "^6.0.0",
     "pg": "^7.4.3",
     "pg-hstore": "^2.3.2",
+    "platziverse-config": "file:../platziverse-config",
     "sequelize": "^4.38.0"
   }
 }
