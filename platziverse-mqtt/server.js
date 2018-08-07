@@ -6,8 +6,10 @@ const redis = require('redis')
 const chalk = require('chalk')
 const db = require('platziverse-db')
 const config = require('platziverse-config').db
-
 const { parsePayload } = require('./utils')
+
+config.logging = s => debug(s)
+
 
 const backend = {
   type: 'redis',
