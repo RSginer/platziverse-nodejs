@@ -4,8 +4,8 @@
 
 ```js
 // Whatever function do you need
-  const { parsePayload } = require('platziverse-utils')
+const { parsePayload } = require('platziverse-utils')
 
-  parsePayload('{"hello":"world"}')
+ parsePayload('{"hello":"world"}')
 
 ```
