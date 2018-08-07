@@ -45,7 +45,7 @@ class PlatziverseAgent extends EventEmitter {
     if (!this._started) {
       this._started = true
       const opts = this._options
-      this._client = mqrr.connect(opts.mqtt.host)
+      this._client = mqtt.connect(opts.mqtt.host)
 
       this._client.subscribe('agent/message')
       this._client.subscribe('agent/connected')
@@ -67,23 +67,21 @@ class PlatziverseAgent extends EventEmitter {
               metrics: [],
               timestamp: new Date().getTime()
             }
-          }
+            for (let [metric, fn] of this._metrics) {
+              if (fn.length == 1) {
+                fn = util.promisify(fn)
+              }
 
-          for (let [metric, fn] of this._metrics) {
-            if (fn.length == 1) {
-              fn = util.promisify(fn)
+              message.metrics.push({
+                type: metric,
+                value: await Promise.resolve(fn())
+              })
             }
 
-            message.metrics.push({
-              type: metric,
-              value: await Promise.resolve(fn())
-            })
+            debug('Sending', message)
+            this._client.publish('agent/message', JSON.stringify(message))
+            this.emit('message', message)
           }
-
-          debug('Sending', message)
-
-          this._client.publish('agent/message', JSON.stringify(message))
-          this.emit('message', message)
 
         }, opts.interval)
       })
@@ -95,7 +93,7 @@ class PlatziverseAgent extends EventEmitter {
 
         let broadcast = false
 
-        switch(topic) {
+        switch (topic) {
           case 'agent/connected':
           case 'agent/disconnected':
           case 'agent/message':
