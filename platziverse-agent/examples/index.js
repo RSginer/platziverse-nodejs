@@ -7,10 +7,10 @@ const agent = new PlatziverseAgent({
 })
 
 agent.addMetric('memory', function getRss() {
-  return process.memoryUsage().heapTotal
+  return process.memoryUsage().rss
 })
 
-/* agent.addMetric('promiseMetric', function getRandomPromise() {
+agent.addMetric('promiseMetric', function getRandomPromise() {
   return Promise.resolve(Math.random())
 })
 
@@ -18,7 +18,7 @@ agent.addMetric('callbackMetric', function getRandomCallBack(callback) {
   setTimeout(() => {
     callback(null, Math.random())
   })
-}) */
+})
 
 agent.connect()
 
