@@ -1,13 +1,14 @@
 'use strict'
 
+const debug = require('debug')('platziverse:api')
 const http = require('http')
 const chalk = require('chalk')
 const express = require('express')
-const debug = require('debug')
+const asyncify = require('express-asyncify')
 
 const api = require('./api')
 const port = process.env.PORT || 3000
-const app = express()
+const app = asyncify(express())
 const server = http.createServer(app)
 
 app.use('/api', api)
@@ -31,7 +32,7 @@ function handleFatalError (err) {
 if (!module.parent) {
   process.on('uncaughtException', handleFatalError)
   process.on('unhandledRejection', handleFatalError)
-  
+
   server.listen(port, () => {
     console.log(`${chalk.green('[platziverse-api]')} Server is listening on port ${port}`)
   })

@@ -1,7 +1,7 @@
 'use strict'
 
 class AgentNotFoundError extends Error {
-  constructor(givenUuid, ...params) {
+  constructor (givenUuid, ...params) {
     super(...params)
 
     this.givenUuid = givenUuid
@@ -15,8 +15,7 @@ class AgentNotFoundError extends Error {
   }
 }
 class MetricsNotFoundError extends Error {
-  constructor(givenUuid, type, ...params) {
-
+  constructor (givenUuid, type, ...params) {
     super(...params)
 
     this.givenUuid = givenUuid
@@ -31,7 +30,7 @@ class MetricsNotFoundError extends Error {
   }
 }
 class NotAuthorizedError extends Error {
-  constructor(...params) {
+  constructor (...params) {
     super(...params)
 
     this.code = 401
@@ -45,7 +44,7 @@ class NotAuthorizedError extends Error {
 }
 
 class NotAuthenticatedError extends Error {
-  constructor(givenUuid, ...params) {
+  constructor (givenUuid, ...params) {
     super(...params)
 
     this.givenUuid = givenUuid
