@@ -20,6 +20,9 @@ api.use('*', async (req, res, next) => {
       services = await db(config.db)
       Agent = services.Agent
       Metric = services.Metric
+      if (services) {
+        debug('Connected! database connection success :)')
+      }
     } catch (err) {
       return next(err)
     }
