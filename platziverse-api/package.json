@@ -1,0 +1,31 @@
+{
+  "name": "platziverse-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Simple IoT platform -API",
+  "main": "index.js",
+  "scripts": {
+    "start": "NODE_ENV=production node server.js",
+    "start-dev": "DEBUG=platziverse:* nodemon server.js",
+    "lint": "standard",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RSginer/platziverse-nodejs.git"
+  },
+  "author": "RSginer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RSginer/platziverse-nodejs/issues"
+  },
+  "homepage": "https://github.com/RSginer/platziverse-nodejs#readme",
+  "devDependencies": {
+    "nodemon": "^1.18.3",
+    "standard": "^11.0.1"
+  },
+  "dependencies": {
+    "debug": "^3.1.0",
+    "express": "^4.16.3"
+  }
+}
