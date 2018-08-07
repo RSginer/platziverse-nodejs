@@ -4,8 +4,8 @@ const test = require('ava')
 const sinon = require('sinon')
 const proxyquire = require('proxyquire')
 
-const metricFixture = require('./fixtures/metric')
-const agentFixtures = require('./fixtures/agent')
+const { AgentFixture, MetricFixture } = require('platziverse-mock')
+
 
 let config = {
   logging: function () { }
@@ -40,7 +40,7 @@ let newMetric = {
 
 let uuidArgs = {
   where: {
-    agentUuid
+    uuid: agentUuid
   }
 }
 test.beforeEach(async () => {
@@ -53,7 +53,7 @@ test.beforeEach(async () => {
 
   // AgentModel findOne Stub
   AgentStub.findOne = sandbox.stub()
-  AgentStub.findOne.withArgs(uuidArgs).returns(Promise.resolve(agentFixtures.findByUuid(agentUuid)))
+  AgentStub.findOne.withArgs(uuidArgs).returns(Promise.resolve(AgentFixture.findByUuid(agentUuid)))
 
   // MetricModel
   MetricStub = {
@@ -62,7 +62,9 @@ test.beforeEach(async () => {
 
   // MetricModel create
   MetricStub.create = sandbox.stub()
-  MetricStub.create.withArgs(newMetric).returns(Promise.resolve(metricFixture.single))
+  MetricStub.create.withArgs(newMetric).returns(Promise.resolve({
+    toJSON: () => MetricFixture.findByAgentUuid(newMetric.agent.uuid)
+  }))
 
   const setupDatabase = proxyquire('../index', {
     './models/agent': () => AgentStub,
@@ -90,10 +92,10 @@ test.serial('Setup', t => {
 test.serial('Metric#create', async t => {
   let metric = await db.Metric.create(agentUuid, newMetric)
 
-  t.true(AgentStub.findOne.called, 'Agent#findOne was executed')
-  t.true(AgentStub.findOne.calledOnce, 'Agent#findOne should be called once')
-  t.true(AgentStub.findOne.calledWith(uuidArgs), 'Agent#findOne should be called with specified args')
-  t.true(MetricStub.create.called, 'Metric#create was executed')
+  t.true(AgentStub.findOne.called, 'AgentModel#findOne was executed')
+  t.true(AgentStub.findOne.calledOnce, 'AgentModel#findOne should be called once')
+  t.true(AgentStub.findOne.calledWith(uuidArgs), 'AgentModel#findOne should be called with specified args')
+  t.true(MetricStub.create.called, 'MetricModel#create was executed')
 
-  t.deepEqual(metric, metricFixture.findByAgentUuid(agentUuid), 'should be the same')
+  t.deepEqual(metric, MetricFixture.findByAgentUuid(agentUuid), 'should be the same')
 })
