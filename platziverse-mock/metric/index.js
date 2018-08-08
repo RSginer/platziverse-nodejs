@@ -49,7 +49,7 @@ module.exports = {
       return m.agent.uuid === uuid
     }
   }),
-  findByTypeAgentUuid: (type, uuid) => metric.filter((m) => {
+  findByTypeAgentUuid: (type, uuid) => metrics.filter((m) => {
     if (m.agent) {
       return m.type === type && m.agent.uuid === uuid
     }
